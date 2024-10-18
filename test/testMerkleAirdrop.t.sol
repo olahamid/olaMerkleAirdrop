@@ -20,6 +20,8 @@ contract testMerkleAirdrop is Test {
     bytes32 public proof2 = 0xb842a25c74facf73c3814b5ef7e7437b3f7e85da7a3ea1c4ae3878e10d6de046;
     bytes32[] public proof = [proof1, proof2];
 
+    address public gasPayer = makeAddr("gasPayer");
+
 
     function setUp() external {
         wETH = new wrappedEther();
@@ -27,16 +29,22 @@ contract testMerkleAirdrop is Test {
         wETH.mint(address(olaAirdrop), amountOwner);
         (user, userPrivKey) = makeAddrAndKey("user");
 
+        gasPayer = makeAddr("gasPayer");
+
     }
     function testUserCanClaim() public {
         // ACT
         console.log("Airdrop balance amount;", wETH.balanceOf(address(olaAirdrop)));
         uint256 startBalance = wETH.balanceOf(user);
+        bytes32 digest = olaAirdrop.getDigest(user, amountUser0);
         wETH.approve(user, amountUser0);
         vm.prank(address(olaAirdrop));
         wETH.approve(user, amountUser0);
-        vm.startPrank(user);
-        olaAirdrop.claim(user, amountUser0, proof);
+
+    (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivKey, digest);
+        
+        vm.startPrank(gasPayer);
+        olaAirdrop.claim(user, amountUser0, proof, v, r, s);
         vm.stopPrank();
         uint256 endingBalance = wETH.balanceOf(user);
         console.log("this is the ending balance;", endingBalance);

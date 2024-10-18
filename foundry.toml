@@ -5,4 +5,8 @@ libs = ["lib"]
 
 fs_permissions = [{access = "read-write", path = "./"}]
 
+[fuzz]
+runs = 256
+seed = '0x2'
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
