@@ -34,7 +34,7 @@ import {EIP712} from "../lib/openzeppelin-contracts/contracts/utils/cryptography
 import {ECDSA} from "../lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
 
 
-contract olaMerkleAirdrop is EIP712, wrappedEther{
+contract olaMerkleAirdrop is EIP712{
     using SafeERC20 for wrappedEther;
 
     //------------------------//
@@ -49,7 +49,7 @@ contract olaMerkleAirdrop is EIP712, wrappedEther{
         uint amount;
     }
 
-    bytes32 private constant messageTypeHash = keccak256("olaAirdropClaim(address account, uint amount)");
+    bytes32 private constant messageTypeHash = keccak256("olaAirdropClaim(address account, uint amount ");
 
 
     //------------------------//

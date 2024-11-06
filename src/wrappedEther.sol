@@ -25,13 +25,13 @@ pragma solidity 0.8.24;
 /// @author Ola Hamid
 /// @notice 
 
-import {IwrappedEther} from "../../src/interface/IwrappedEther.sol";
+import {IwrappedEther} from "../src/interface/IwrappedEther.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract wrappedEther is IwrappedEther {
     string public name = "wrapped Ether";
     string public symbol = "WETH";
-    uint8 public decimal = 18;
+    uint8 public decimals = 18;
     uint256 public s_totalSupply;
 
     error wETH_insufficientFunds();
@@ -61,8 +61,9 @@ contract wrappedEther is IwrappedEther {
     }
 
     function totalSupply() public view returns (uint256) {
-        return address(this).balance;
+        return s_totalSupply;
     }
+    
 
     /**
      * @notice this function allows a token owner to authorize another address [spender] GUY, to spend a specific amount
